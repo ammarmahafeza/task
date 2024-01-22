@@ -72,7 +72,7 @@ public  void invalidCase_CheckOutbeforIn()
     payload.setCheckIn(checkOut);
     payload.setCheckOut(checkIn);
 //
-    //
+   //
    Response response =searchPost.validateidentifier(payload);
    response.then().log().all();
     Assert.assertEquals(response.getStatusCode(), 400);
