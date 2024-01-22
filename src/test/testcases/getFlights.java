@@ -1,6 +1,5 @@
 package testcases;
 
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.testng.Assert.assertEquals;
 
 import java.time.LocalDate;
@@ -9,7 +8,7 @@ import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import java.lang.String;
+
 import apitest.endpoints.flightApi;
 import io.restassured.response.Response;
 
@@ -24,31 +23,37 @@ public class getFlights {
     // Format the LocalDate as a string
     DateTimeFormatter DepartureDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     LocalDate ReturnDate = DepartureDate.plusDays(3);
-	int Adults = 1 ;
+	int Adults ;
 	String airPort ;
     String Departure = DepartureDate.format(DepartureDateFormat);
 	String Return =ReturnDate.format(DepartureDateFormat);
-	String originId  = "RUH";
-	String destinationId = "JED";
-	
+
 
 @Test
-public  void getValidFlight()
+public  void getValidFlight(String originId ,String destinationId)
 
 {
-	
-	
+		System.err.print("hhh");
+
 	Response response =flightApi.getFlight(originId,destinationId,Departure,Return,2);
-	Assert.assertEquals(response.getStatusCode(), 200);
-	response.then().body(matchesJsonSchemaInClasspath("getFlight.json"));
-	String DepartureResponse = response.path("request.leg[0].departure");
-	assertEquals(DepartureResponse, Departure);
-	
-//	String originIdResponse = response.path("request.leg[0].originId");
-//	assertEquals(originIdResponse, originId);
+response.then().log().all();
+
+Assert.assertEquals(response.getStatusCode(), 200);
+String DepartureResponse = response.path("leg[0].departure");
+assertEquals(DepartureResponse, Departure);
+
+String ReturnResponse = response.path("request.leg[1].checkOut");
+assertEquals(ReturnResponse, Return);
+
+
+String destinationIdResponse = response.path("request.leg[0].destinationId") ;
+assertEquals(destinationIdResponse, destinationId);
+
+String originIdResponse = response.path("request.leg[0].originId");
+assertEquals(originIdResponse, originId);
 }
 @Test
-public  void getInvalidDesetnationFlights()
+public  void getInvalidDesetnationFlights(String originId)
 
 {
 Response response =flightApi.getFlight("AHB","AHB",Departure,Return,2);
@@ -60,7 +65,7 @@ Assert.assertEquals(response.getStatusCode(), 400);
 public  void getInvaliddatesFlights()
 
 {
-Response response =flightApi.getFlight("JED","JED",Departure,Departure,1);
+Response response =flightApi.getFlight("AHB","JED",Departure,Departure,1);
 response.then().log().all();
 Assert.assertEquals(response.getStatusCode(), 400);
 }

@@ -1,17 +1,21 @@
 package payload;
 
-import java.util.Random;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class searchData {
-
-	String identifier;
-	String method;
+	@JsonProperty("placeId")
     String placeId;
-    String checkIn;
+	@JsonProperty("checkIn")
+	String checkIn;
+	@JsonProperty("checkOut")
     String checkOut;
-    String token ;
-String room;
- public void setPlaceID(String placeId) {
+	@JsonProperty("room")
+    String room;
+
+    
+    public void setPlaceID(String placeId) {
 	this.placeId = placeId;
 }
 
@@ -28,26 +32,15 @@ String room;
 		this.room = room;
 	}
 
-	public String getToken() {
-	return token;
-}
+		
 
-	 public void setToken(String token) {
-			this.token = token;
-		}
-			public String getidentifier() {
-				return identifier;
+			public String  getCheckIn() {
+				return  checkIn;
 			}
-			public void setidentifier(String identifier) {
-				this.identifier = identifier;
+			
+			public String getCheckOut() {
+				return checkOut;
 			}
-			public String getmethod() {
-				return method;
-			}
-			public void setmethod(String method) {
-				this.method = method;
-			}
-
 
 
 

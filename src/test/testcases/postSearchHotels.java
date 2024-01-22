@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
-import org.apache.http.client.ClientProtocolException;
+import org.hamcrest.Matchers;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -37,45 +37,41 @@ public class postSearchHotels {
 	    payload.setCheckIn(checkIn);
 		payload.setCheckOut(checkOut);
 		payload.setPlaceID("ChIJRcbZaklDXz4RYlEphFBu5r0");
-	
+		int randomNumber = new Random().nextInt(10000000);
+		String RandomNumber = String.valueOf(randomNumber);
+	    String token="skdjfh73273$23456234";
+		payload.setidentifier(RandomNumber);
+		payload.setToken("Bearer"+ token);
+
 
 	}
 	
 	
 @Test
+
 	public  void validateidentifier()
 {
-	try {
-		
-		
-		Response response =searchPost.validateidentifier(payload);
-	    response.then().log().all()
-	    .extract().response();
-	     Assert.assertEquals(response.getStatusCode(), 200);
-	    String ID = response.path("sId");
-	assert (ID != null) : "ID is null";
-}
-	
-catch (Exception ex) {
-	ex.printStackTrace();
+	Response response =searchPost.validateidentifier(payload);
+    response.then().log().all()
+    .extract().response();
+Assert.assertEquals(response.getStatusCode(), 200);
+String ID = response.path("sId");
+assert (ID != null) : "ID is null";
 }
 
-}
-
-//
 
 
 @Test
+
 public  void invalidCase_CheckOutbeforIn()
 
 {
     payload.setCheckIn(checkOut);
     payload.setCheckOut(checkIn);
-//
-    //
-   Response response =searchPost.validateidentifier(payload);
-   response.then().log().all();
-    Assert.assertEquals(response.getStatusCode(), 400);
+
+ Response response =searchPost.validateidentifier(payload);
+ response.then().log().all();
+Assert.assertEquals(response.getStatusCode(), 400);
 
 }
 
@@ -88,7 +84,7 @@ public  void nullDates()
 
      Response response =searchPost.validateidentifier(payload);
      response.then().log().all();
-     response.then().assertThat().statusCode(200);
+     response.then().assertThat().statusCode(400);
 }
 
 }

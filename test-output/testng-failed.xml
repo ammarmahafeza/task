@@ -3,12 +3,11 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="testcases.postSearchHotels">
+      <class name="testcases.getFlights">
         <methods>
-          <include name="setData"/>
-          <include name="validateidentifier"/>
+          <include name="getInvaliddatesFlights"/>
         </methods>
-      </class> <!-- testcases.postSearchHotels -->
+      </class> <!-- testcases.getFlights -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
